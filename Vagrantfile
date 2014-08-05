@@ -10,6 +10,10 @@
 IP_ADDRESS = '172.22.22.22'
 PROJECT_NAME = 'project-name'
 
+#Passwords
+DATABASE_PASSWORD = 'password'
+LINUX_PASSWORD = ''
+
 #Versions
 VAGRANTFILE_API_VERSION = '2'
 
@@ -46,7 +50,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #
   config.vm.provision "chef_solo" do |chef|
     chef.add_recipe 'apt'
-    chef.json = {}
+    chef.add_recipe 'mysql::server'
+
+    chef.json = {
+      mysql: {
+        server_root_password: DATABASE_PASSWORD,
+        server_debian_password: LINUX_PASSWORD,
+        allow_remote_root: true
+      }
+    }
   end
 
 
